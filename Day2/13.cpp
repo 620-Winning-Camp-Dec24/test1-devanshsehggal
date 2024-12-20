@@ -1,6 +1,7 @@
-#include<iostream>
+#include <iostream>
+#include <vector>
 using namespace std;
-  
+
 class Node { 
 public:
     int data; 
@@ -13,26 +14,24 @@ public:
     }
 };
 
-Node* sortedArrayToBST(vector<int>& arr, int start, int end) {
-    if(start > end) return nullptr;
+Node* sortedArrayToBSTHelper(vector<int>& arr, int start, int end) {
+    if (start > end) return nullptr;
     
     int mid = start + (end - start) / 2;
-    
     Node* root = new Node(arr[mid]);
     
-    root->left = sortedArrayToBST(arr, start, mid - 1);
-
-    root->right = sortedArrayToBST(arr, mid + 1, end);
+    root->left = sortedArrayToBSTHelper(arr, start, mid - 1);
+    root->right = sortedArrayToBSTHelper(arr, mid + 1, end);
+    
     return root;
 }
 
-Node* sortedArrayToBST(vector<int> &arr) {
+Node* sortedArrayToBST(vector<int>& arr) {
     int n = arr.size();
-    return sortedArrayToBST(arr, 0, n-1);
+    return sortedArrayToBSTHelper(arr, 0, n - 1);
 }
 
-void printInorder(struct Node* node)
-{
+void printInorder(Node* node) {
     if (node == nullptr)
         return;
     printInorder(node->left);
@@ -40,18 +39,11 @@ void printInorder(struct Node* node)
     printInorder(node->right);
 }
 
-int main(){
-    
-    vector<int> nums;
-    nums.push_back(1);
-    nums.push_back(2);
-    nums.push_back(3);
-    nums.push_back(4);
-    nums.push_back(5);
-    nums.push_back(6);
-    nums.push_back(7);
+int main() {
+    vector<int> nums = {1, 2, 3, 4, 5, 6, 7};
    
     Node* root = sortedArrayToBST(nums);
+    cout << "Inorder Traversal of the BST:" << endl;
     printInorder(root);
     
     return 0;
